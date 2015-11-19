@@ -1,0 +1,36 @@
+import os, argparse, subprocess
+from pywrite.pylatex import *
+
+def main():
+
+    parser = argparse.ArgumentParser(description="""
+    Compile latex document and """
+    )
+
+    parser.add_argument("input",
+        help="""Input text file to compile""",
+        type=str)
+
+    parser.add_argument("--preview",
+        help=""" Open pdf in preview? """,
+        type=bool,
+        default=True)
+
+    # Parse arguments
+    args = parser.parse_args()
+
+    path, ext = os.path.splitext(args.input)
+
+    # Compile tex document with pdf latex
+    compile_latex(path + ext)
+
+    # Remove annoying files
+    remove_aux(path + ext)
+
+    # Open with preview
+    if args.preview:
+        preview_pdf(path + ".pdf")
+
+
+if __name__ == '__main__':
+    main()
